@@ -82,6 +82,7 @@ public interface Clock {
 
         /**
          * Validates the input.
+         * @param clock Clock.
          * @return Valid clock.
          * @checkstyle MagicNumberCheck (10 lines)
          */
@@ -91,7 +92,7 @@ public interface Clock {
                     "Hour must be between 0 and 11"
                 );
             }
-            if (clock.minutes()> 59 || clock.minutes() < 0) {
+            if (clock.minutes() > 59 || clock.minutes() < 0) {
                 throw new IllegalArgumentException(
                     "Minute must be between 0 and 59"
                 );
