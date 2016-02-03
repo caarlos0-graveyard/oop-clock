@@ -29,44 +29,57 @@ package com.carlosbecker.clock;
  * @version $Id$
  * @since 0.1
  */
-public final class Angle {
-    /**
-     * The clock to use.
-     */
-    private final transient Clock clock;
-
-    /**
-     * Ctor.
-     * @param clock Clock.
-     */
-    public Angle(final Clock clock) {
-        this.clock = clock;
-    }
-
+public interface Angle {
     /**
      * Calculates the angle between the hour and minute pointers.
      * @return The angle between hour and minute pointers.
-     * @checkstyle MagicNumberCheck (5 lines)
      */
-    public int calculate() {
-        int result = this.diff();
-        if (result > 180) {
-            result = 360 - result;
-        }
-        return result;
-    }
+    int calculate();
 
     /**
-     * Difference between the angles of the minute pointer and hour pointer to
-     *  0.
-     * @return Degrees difference.
+     * Smart implementation of Angle.
      */
-    private int diff() {
-        return Math.abs(
-            Math.subtractExact(
-                new Degree.Minute(this.clock.minutes()).get(),
-                new Degree.Hour(this.clock.hours(), this.clock.minutes()).get()
-            )
-        );
+    final class Smart implements Angle {
+        /**
+         * The clock to use.
+         */
+        private final transient Clock clock;
+
+        /**
+         * Ctor.
+         * @param clock Clock.
+         */
+        Smart(final Clock clock) {
+            this.clock = clock;
+        }
+
+        @Override
+        public int calculate() {
+            // @checkstyle MagicNumberCheck (5 lines)
+            int result = this.diff();
+            if (result > 180) {
+                result = 360 - result;
+            }
+            return result;
+        }
+
+        /**
+         * Difference between the angles of the minute pointer and hour pointer
+         * to 0.
+         * @return Degrees difference.
+         */
+        private int diff() {
+            return Math.abs(
+                Math.subtractExact(
+                    new Degree.Minute(
+                        this.clock.minutes()
+                    ).get(),
+                    new Degree.Hour(
+                        this.clock.hours(),
+                        this.clock.minutes()
+                    ).get()
+                )
+            );
+        }
     }
 }

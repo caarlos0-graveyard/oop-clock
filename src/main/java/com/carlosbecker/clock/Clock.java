@@ -29,65 +29,113 @@ package com.carlosbecker.clock;
  * @version $Id$
  * @since 0.1
  */
-public final class Clock {
-    /**
-     * Hour.
-     */
-    private final transient int hour;
-    /**
-     * Minute.
-     */
-    private final transient int minute;
-
-    /**
-     * Ctor.
-     * @param hour Hour.
-     * @param minute Minute.
-     */
-    public Clock(final int hour, final int minute) {
-        this.hour = hour;
-        this.minute = minute;
-    }
-
+public interface Clock {
     /**
      * Angle for this particular clock.
      * @return Angle instance.
      */
-    public Angle angle() {
-        this.validate();
-        return new Angle(this);
-    }
-
-    /**
-     * Minutes value.
-     * @return Minutes.
-     */
-    public int minutes() {
-        return this.minute;
-    }
+    Angle angle();
 
     /**
      * Hours value.
      * @return Hours.
      */
-    public int hours() {
-        return this.hour;
+    int hours();
+
+    /**
+     * Minutes value.
+     * @return Minutes.
+     */
+    int minutes();
+
+    /**
+     * Valid Clock implementation.
+     */
+    final class Valid implements Clock {
+        /**
+         * Clock.
+         */
+        private final transient Clock clock;
+
+        /**
+         * Ctor.
+         * @param clock Clock.
+         */
+        Valid(final Clock clock) {
+            this.clock = Clock.Valid.validate(clock);
+        }
+
+        @Override
+        public Angle angle() {
+            return this.clock.angle();
+        }
+
+        @Override
+        public int hours() {
+            return this.clock.hours();
+        }
+
+        @Override
+        public int minutes() {
+            return this.clock.minutes();
+        }
+
+        /**
+         * Validates the input.
+         * @return Valid clock.
+         * @checkstyle MagicNumberCheck (10 lines)
+         */
+        private static Clock validate(final Clock clock) {
+            if (clock.hours() > 11 || clock.hours() < 0) {
+                throw new IllegalArgumentException(
+                    "Hour must be between 0 and 11"
+                );
+            }
+            if (clock.minutes()> 59 || clock.minutes() < 0) {
+                throw new IllegalArgumentException(
+                    "Minute must be between 0 and 59"
+                );
+            }
+            return clock;
+        }
     }
 
     /**
-     * Validates the input.
-     * @checkstyle MagicNumberCheck (10 lines)
+     * Smart implementation of Clock.
      */
-    private void validate() {
-        if (this.hour > 11 || this.hour < 0) {
-            throw new IllegalArgumentException(
-                "Hour must be between 0 and 11"
-            );
+    final class Smart implements Clock {
+        /**
+         * Hour.
+         */
+        private final transient int hour;
+        /**
+         * Minute.
+         */
+        private final transient int minute;
+
+        /**
+         * Ctor.
+         * @param hour Hour.
+         * @param minute Minute.
+         */
+        Smart(final int hour, final int minute) {
+            this.hour = hour;
+            this.minute = minute;
         }
-        if (this.minute > 59 || this.minute < 0) {
-            throw new IllegalArgumentException(
-                "Minute must be between 0 and 59"
-            );
+
+        @Override
+        public Angle angle() {
+            return new Angle.Smart(this);
+        }
+
+        @Override
+        public int minutes() {
+            return this.minute;
+        }
+
+        @Override
+        public int hours() {
+            return this.hour;
         }
     }
 }

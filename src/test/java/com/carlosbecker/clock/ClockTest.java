@@ -31,9 +31,9 @@ import org.junit.Test;
  * Test cases for Clock.
  * @author Carlos Alexandro Becker (caarlos0@gmail.com)
  * @version $Id$
- * @since 0.1
  * @checkstyle MagicNumberCheck (200 lines)
  * @checkstyle MethodNameCheck (200 lines)
+ * @since 0.1
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public final class ClockTest {
@@ -43,11 +43,13 @@ public final class ClockTest {
     @Test
     public void throwsExceptionWithIncorrectHour() {
         final String message = "Hour must be between";
-        Assertions.assertThatThrownBy(() -> new Clock(-1, 0).angle())
-            .isInstanceOf(IllegalArgumentException.class)
+        Assertions.assertThatThrownBy(
+            () -> new Clock.Valid(new Clock.Smart(-1, 0)).angle()
+        ).isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining(message);
-        Assertions.assertThatThrownBy(() -> new Clock(12, 0).angle())
-            .isInstanceOf(IllegalArgumentException.class)
+        Assertions.assertThatThrownBy(
+            () -> new Clock.Valid(new Clock.Smart(12, 0)).angle()
+        ).isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining(message);
     }
 
@@ -57,11 +59,13 @@ public final class ClockTest {
     @Test
     public void throwsExceptionWithIncorrectMinute() {
         final String message = "Minute must be between";
-        Assertions.assertThatThrownBy(() -> new Clock(1, -1).angle())
-            .isInstanceOf(IllegalArgumentException.class)
+        Assertions.assertThatThrownBy(
+            () -> new Clock.Valid(new Clock.Smart(1, -1)).angle()
+        ).isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining(message);
-        Assertions.assertThatThrownBy(() -> new Clock(1, 60).angle())
-            .isInstanceOf(IllegalArgumentException.class)
+        Assertions.assertThatThrownBy(
+            () -> new Clock.Valid(new Clock.Smart(1, 60)).angle()
+        ).isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining(message);
     }
 
@@ -147,7 +151,7 @@ public final class ClockTest {
         final int hour, final int minute
     ) {
         return Assertions.assertThat(
-            new Clock(hour, minute).angle().calculate()
+            new Clock.Valid(new Clock.Smart(hour, minute)).angle().calculate()
         );
     }
 }
