@@ -21,34 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carlosbecker;
+package com.carlosbecker.clock;
 
 import org.assertj.core.api.AbstractIntegerAssert;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 /**
+ * Test cases for Clock.
  * @author Carlos Alexandro Becker (caarlos0@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ * @checkstyle MagicNumberCheck (100 lines)
  */
 public final class ClockTest {
     @Test
     public void throwsExceptionWithIncorrectHour() {
+        final String message = "Hour must be between";
         Assertions.assertThatThrownBy(() -> new Clock(-1, 0).angle())
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Hour must be between");
+            .hasMessageContaining(message);
         Assertions.assertThatThrownBy(() -> new Clock(12, 0).angle())
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Hour must be between");
+            .hasMessageContaining(message);
     }
 
     @Test
     public void throwsExceptionWithIncorrectMinute() {
+        final String message = "Minute must be between";
         Assertions.assertThatThrownBy(() -> new Clock(1, -1).angle())
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Minute must be between");
+            .hasMessageContaining(message);
         Assertions.assertThatThrownBy(() -> new Clock(1, 60).angle())
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Minute must be between");
+            .hasMessageContaining(message);
     }
 
     @Test

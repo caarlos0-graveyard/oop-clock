@@ -21,70 +21,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carlosbecker;
+package com.carlosbecker.clock;
 
 /**
- * Calculates the degrees between some value and 0.
+ * Calculates the angle for a given clock.
  * @author Carlos Alexandro Becker (caarlos0@gmail.com)
+ * @version $Id$
+ * @since 0.1
  */
-public interface Degree {
+public final class Angle {
     /**
-     * Calculate the degree.
-     * @return Degree value.
+     * The clock to use.
      */
-    int get();
+    private final transient Clock clock;
 
     /**
-     * Hour implementation of degree.
+     * Ctor.
+     * @param clock Clock.
      */
-    final class Hour implements Degree {
-        /**
-         * Hour.
-         */
-        private final transient int hour;
-        /**
-         * Minute.
-         */
-        private final transient int minute;
-
-        /**
-         * Ctor.
-         * @param hour Hour.
-         * @param minute Minute.
-         */
-        Hour(final int hour, final int minute) {
-            this.hour = hour;
-            this.minute = minute;
-        }
-
-        @Override
-        public int get() {
-            return Math.round(
-                30.0f * (float) this.hour + 0.5f * (float) this.minute
-            );
-        }
+    public Angle(final Clock clock) {
+        this.clock = clock;
     }
 
     /**
-     * Minute implementation of Degree.
+     * Calculates the angle between the hour and minute pointers.
+     * @return The angle between hour and minute pointers.
+     * @checkstyle MagicNumberCheck (5 lines)
      */
-    final class Minute implements Degree {
-        /**
-         * Minute.
-         */
-        private final transient int minute;
-
-        /**
-         * Ctor.
-         * @param minute Minute.
-         */
-        Minute(final int minute) {
-            this.minute = minute;
+    public int calculate() {
+        int result = this.diff();
+        if (result > 180) {
+            result = 360 - result;
         }
+        return result;
+    }
 
-        @Override
-        public int get() {
-            return 6 * this.minute;
-        }
+    /**
+     * Difference between the angles of the minute pointer and hour pointer to
+     *  0.
+     * @return Degrees difference.
+     */
+    private int diff() {
+        return Math.abs(
+            Math.subtractExact(
+                new Degree.Minute(this.clock.minutes()).get(),
+                new Degree.Hour(this.clock.hours(), this.clock.minutes()).get()
+            )
+        );
     }
 }

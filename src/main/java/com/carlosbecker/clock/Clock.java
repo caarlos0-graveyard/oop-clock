@@ -21,48 +21,73 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.carlosbecker;
+package com.carlosbecker.clock;
 
 /**
+ * Main Clock class.
  * @author Carlos Alexandro Becker (caarlos0@gmail.com)
+ * @version $Id$
+ * @since 0.1
  */
-public final class Angle {
+public final class Clock {
     /**
-     * The clock to use.
+     * Hour.
      */
-    private final transient Clock clock;
+    private final transient int hour;
+    /**
+     * Minute.
+     */
+    private final transient int minute;
 
     /**
      * Ctor.
-     * @param clock Clock.
+     * @param hour Hour.
+     * @param minute Minute.
      */
-    public Angle(final Clock clock) {
-        this.clock = clock;
+    public Clock(final int hour, final int minute) {
+        this.hour = hour;
+        this.minute = minute;
     }
 
     /**
-     * Calculates the angle between the hour and minute pointers.
-     * @return The angle between hour and minute pointers.
+     * Angle for this particular clock.
+     * @return Angle instance.
      */
-    public int calculate() {
-        int result = this.diff();
-        if (result > 180) {
-            result = 360 - result;
+    public Angle angle() {
+        this.validate();
+        return new Angle(this);
+    }
+
+    /**
+     * Minutes value.
+     * @return Minutes.
+     */
+    public int minutes() {
+        return this.minute;
+    }
+
+    /**
+     * Hours value.
+     * @return Hours.
+     */
+    public int hours() {
+        return this.hour;
+    }
+
+    /**
+     * Validates the input.
+     * @checkstyle MagicNumberCheck (10 lines)
+     */
+    private void validate() {
+        if (this.hour > 11 || this.hour < 0) {
+            throw new IllegalArgumentException(
+                "Hour must be between 0 and 11"
+            );
         }
-        return result;
-    }
-
-    /**
-     * Difference between the angles of the minute pointer and hour pointer to
-     *  0.
-     * @return Degrees difference.
-     */
-    private int diff() {
-        return Math.abs(
-            Math.subtractExact(
-                new Degree.Minute(this.clock.minutes()).get(),
-                new Degree.Hour(this.clock.hours(), this.clock.minutes()).get()
-            )
-        );
+        if (this.minute > 59 || this.minute < 0) {
+            throw new IllegalArgumentException(
+                "Minute must be between 0 and 59"
+            );
+        }
     }
 }
