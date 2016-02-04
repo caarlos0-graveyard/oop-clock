@@ -61,7 +61,7 @@ public interface Clock {
          * Ctor.
          * @param clock Clock.
          */
-        Valid(final Clock clock) {
+        public Valid(final Clock clock) {
             this.clock = Clock.Valid.validate(clock);
         }
 
@@ -119,7 +119,7 @@ public interface Clock {
          * @param hour Hour.
          * @param minute Minute.
          */
-        Smart(final int hour, final int minute) {
+        public Smart(final int hour, final int minute) {
             this.hour = hour;
             this.minute = minute;
         }
