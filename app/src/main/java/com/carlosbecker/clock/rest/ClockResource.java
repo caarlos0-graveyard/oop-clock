@@ -46,11 +46,11 @@ public class ClockResource {
      * @checkstyle NonStaticMethodCheck (7 lines)
      */
     @GET
-    @Path("/{hours}{minutes : (/\\d+)?}")
+    @Path("/{hour : \\d+}/{minute : \\d+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public final AngleDTO angle(
-        @PathParam("hours") final int hour,
-        @PathParam("minutes") final int minute
+    public AngleDTO angle(
+        @PathParam("hour") final int hour,
+        @PathParam("minute") final int minute
     ) {
         return new AngleDTO(
             new Clock.Valid(new Clock.Smart(hour, minute)).angle().calculate()

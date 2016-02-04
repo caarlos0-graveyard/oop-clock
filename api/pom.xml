@@ -57,9 +57,6 @@
                 <version>0.16</version>
                 <configuration>
                     <license>file:${basedir}/LICENSE.md</license>
-                    <excludes>
-                        <exclude>xml:/src/main/webapp/WEB-INF/jboss-web.xml</exclude>
-                    </excludes>
                 </configuration>
                 <executions>
                     <execution>

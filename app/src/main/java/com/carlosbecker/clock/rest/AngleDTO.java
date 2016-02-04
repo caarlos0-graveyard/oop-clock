@@ -29,12 +29,11 @@ package com.carlosbecker.clock.rest;
  * @version $Id$
  * @since 0.1
  */
-@SuppressWarnings("PMD.SingularField")
-public final class AngleDTO {
+public class AngleDTO {
     /**
      * Angle.
      */
-    private final transient int angle;
+    public int angle;
 
     /**
      * Ctor.
@@ -42,13 +41,5 @@ public final class AngleDTO {
      */
     public AngleDTO(final int angle) {
         this.angle = angle;
-    }
-
-    /**
-     * Getter.
-     * @return Angle.
-     */
-    public int getAngle() {
-        return this.angle;
     }
 }
